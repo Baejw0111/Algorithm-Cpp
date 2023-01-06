@@ -2,6 +2,7 @@
 #include <string>
 using namespace std;
 
+// 문제에 주어진 조건대로 스택 클래스 구현
 class Stack{
     struct node{
         int num;
