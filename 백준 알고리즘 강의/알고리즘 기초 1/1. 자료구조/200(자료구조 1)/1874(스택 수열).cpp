@@ -1,130 +1,73 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <stack>
+#include <queue>
 using namespace std;
 
+int n;
+// 수열을 입력받을 벡터
+vector<int> seq;
+// 입력받은 수열을 만들 스택
+stack<int> stk;
+// 스택 연산을 저장할 큐
+queue<char> command;
 
-template <typename T>
-class Stack{
-    struct node{
-        T data;
-        node* next;
-    };
-    using link=node*;
+int check()
+{
+    int k = 0;
 
-    link top;
-
-public:
-    Stack():top(NULL){}
-    void Push(T x);
-    int Pop();
-    int Top();
-    ~Stack();
-};
-
-int check(int *arr,int n){
-    Stack<int> stk;
-    int k=1;
-
-    for(int i=0;i<n;i++){
-        while(stk.Top()<arr[i]){
-            stk.Push(k);
-            k++;
+    for (int i = 0; i < n; ++i)
+    {
+        while (k < seq[i])
+        {
+            ++k;
+            stk.push(k);
+            command.push('+');
         }
 
-        if(stk.Top()==arr[i]){
-            stk.Pop();
+        if (seq[i] == stk.top())
+        {
+            stk.pop();
+            command.push('-');
         }
-        else{
+        else
+        {
             return 0;
         }
-    } 
+    }
 
     return 1;
 }
 
-void sequence(int *arr,int n){
-    Stack<int> stk;
-    int k=1;
-
-    for(int i=0;i<n;i++){
-        while(stk.Top()<arr[i]){
-            stk.Push(k);
-            k++;
-            cout<<"+"<<'\n';
-        }
-
-        stk.Pop();
-        cout<<"-"<<'\n';
-    } 
-}
-
-int main(){
+int main()
+{
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    //c++의 표준 stream의 동기화를 끊는 역할을 하여 입출력의 속도를 높인다.
+    // c++의 표준 stream의 동기화를 끊는 역할을 하여 입출력의 속도를 높인다.
 
-    int n;
-    cin>>n;
+    cin >> n;
 
-    int *arr=new int[n];
-
-    for(int i=0;i<n;i++){
-        cin>>arr[i];
+    for (int i = 0; i < n; i++)
+    {
+        int tmp;
+        cin >> tmp;
+        seq.push_back(tmp);
     }
 
-    if(check(arr,n)){
-        sequence(arr,n);
+    if (check())
+    {
+        while (!command.empty())
+        {
+            cout << command.front() << '\n';
+            command.pop();
+        }
     }
-    else{
-        cout<<"NO"<<'\n';
+    else
+    {
+        cout << "NO" << '\n';
     }
 
     return 0;
-}
-
-
-template <typename T>
-void Stack<T>::Push(T x){
-    if(top==NULL){
-        top=new node;
-        top->data=x;
-        top->next=NULL;
-    }
-    else{
-        link tmp=new node;
-        tmp->data=x;
-        tmp->next=top;
-        top=tmp;
-    }
-}
-
-template <typename T>
-int Stack<T>::Pop(){
-    if(top==NULL){
-        return 0;
-    }
-    else{
-        top=top->next;
-        return 1;
-    }
-}
-
-template <typename T>
-int Stack<T>::Top(){
-    if(top==NULL){
-        return 0;
-    }
-    else{
-        return top->data;
-    }
-}
-
-template <typename T>
-Stack<T>::~Stack(){
-    while(top){
-        link tmp=top;
-        top=top->next;
-        delete tmp;
-    }
 }
