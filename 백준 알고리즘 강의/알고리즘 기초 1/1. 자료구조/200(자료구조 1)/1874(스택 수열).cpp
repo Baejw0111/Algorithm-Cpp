@@ -15,10 +15,13 @@ queue<char> command;
 
 int check()
 {
+    // 스택 작업에 이용될 변수
     int k = 0;
 
     for (int i = 0; i < n; ++i)
     {
+        // k가 수열의 i번째 수보다 같아질 때 까지 값을 늘려가며 스택에 push.
+        // 동시에 스택 작업 기록
         while (k < seq[i])
         {
             ++k;
@@ -26,11 +29,14 @@ int check()
             command.push('+');
         }
 
+        // 위 작업이 끝난 후 수열의 i번째 수와 스택의 가장 위에 있는 수가 같을 시 pop
+        // 역시 동시에 스택 작업 기록
         if (seq[i] == stk.top())
         {
             stk.pop();
             command.push('-');
         }
+        // 같지 않다면 수열을 만드는 것이 불가능 함.
         else
         {
             return 0;
@@ -56,6 +62,7 @@ int main()
         seq.push_back(tmp);
     }
 
+    // check의 반환값으로 입력받은 수열을 만드는 것이 가능한 지의 여부 판단 가능
     if (check())
     {
         while (!command.empty())
