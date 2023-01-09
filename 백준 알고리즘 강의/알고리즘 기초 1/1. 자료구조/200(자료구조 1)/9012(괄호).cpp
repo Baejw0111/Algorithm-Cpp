@@ -54,8 +54,7 @@ int main(){
 
     int n;
     cin>>n;
-    string trash;
-    getline(cin,trash);
+    cin.ignore();
 
     for(int i=0;i<n;i++){
         string str;
