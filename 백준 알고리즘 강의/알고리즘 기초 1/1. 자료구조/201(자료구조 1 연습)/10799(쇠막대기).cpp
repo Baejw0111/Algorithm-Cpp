@@ -1,95 +1,42 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
-class Stack{
-    struct node{
-        char elem;
-        node* next;
-    };
-    using link=node*;
-
-    link top;
-    int size;
-
-public:
-    Stack():top(NULL),size(0){}
-    void Push(char x);
-    int Pop();
-    int Size();
-    ~Stack();
-};
-
-int main(){
+int main()
+{
     string str;
-    cin>>str;
+    cin >> str;
 
-    int total=0;
+    // '('를 저장할 스택
+    stack<char> stk;
+    /* 정답을 저장할 변수.
+    잘려진 쇠막대기 조각의 총 개수를 의미한다. */
+    int ans = 0;
+    // 문자열에서 현재 문자의 앞 문자를 저장할 변수다.
+    char prev = '(';
 
-    Stack stk;
-
-    for(int i=0;i<str.length();i++){
-        if(str[i]=='('){
-            if(i+1<str.length() && str[i+1]==')'){
-                total+=stk.Size();
-                i++;
-                continue;
+    for (char a : str)
+    {
+        if (a == '(')
+        {
+            stk.push(a);
+        }
+        else
+        {
+            stk.pop();
+            if (prev == '(')
+            {
+                ans += stk.size();
             }
-            else{
-                stk.Push(str[i]);
-                total+=1;
+            else
+            {
+                ans += 1;
             }
         }
-        else if(str[i]==')'){
-            stk.Pop();
-        }
+
+        prev = a;
     }
 
-    cout<<total;
+    cout << ans;
 
     return 0;
-}
-
-
-void Stack::Push(char x){
-    if(top==NULL){
-        top=new node;
-        top->elem=x;
-        top->next=NULL;
-    }
-    else{
-        link tmp=new node;
-        tmp->elem=x;
-        tmp->next=top;
-        top=tmp;
-    }
-
-    size++;
-}
-
-int Stack::Pop(){
-    if(size==0){
-        return -1;
-    }
-    else{
-        int tmp=top->elem;
-        link tmpnod=top;
-        top=top->next;
-        delete tmpnod;
-        size--;
-
-        return tmp;
-    }
-}
-
-int Stack::Size(){
-    return size;
-}
-
-Stack::~Stack(){
-    while(top){
-        link tmp=top;
-        top=top->next;
-        delete tmp;
-    }
 }
