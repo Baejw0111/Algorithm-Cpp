@@ -1,105 +1,73 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
-class Stack{
-    struct node{
-        int num;
-        node* next;
-    };
-    using link=node*;
+int n;
 
-    link top;
-    int size;
+/*
+seq: 수열 A를 저장할 스택
+stk: 오등큰수를 알아낼 때 사용할 스택
+ans: 수열 A의 각 수의 오등큰수를 저장할 스택
+*/
+stack<int> seq,stk,ans;
 
-public:
-    Stack():top(NULL),size(0){}
-    void Push(int x);
-    int Pop();
-    int Top();
-    ~Stack();
-};
+// cnt: 각 수의 등장 횟수를 저장할 벡터
+vector<int> cnt;
 
-int main(){
-    int n,max=0;
-    cin>>n;
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-    int *arr=new int[n],*ans=new int[n];
+    cin >> n;
 
-    Stack stk;
+    // 수열의 최대값을 저장하기 위한 변수
+    int m=0;
 
-    for(int i=0;i<n;i++){
-        cin>>arr[i];
-        if(max<arr[i]){
-            max=arr[i];
+    for (int i = 0; i < n; i++)
+    {
+        int tmp;
+        cin >> tmp;
+
+        seq.push(tmp);
+        m=max(m,tmp);
+        // 최대값+1의 크기로 cnt의 인덱스 범위 늘리기
+        cnt.resize(m+1);
+        cnt[tmp]+=1;
+    }
+
+    /*
+    오등큰수가 무조건 없는 수열의 마지막 수를 고려해
+    코드 작성에 용이하도록 -1을 push
+    */
+    stk.push(-1);
+
+    // 수열 A를 거꾸로 읽어나간다.
+    while(!seq.empty())
+    {
+        /*
+        현재 스캔 중인 수보다 stk의 가장 위에 있는 수(top)가 더 크면 pop
+        top이 0일 시 중단
+        */
+        while (stk.top() > 0 && cnt[stk.top()] <= cnt[seq.top()])
+        {
+            stk.pop();
         }
+
+        //위 과정이 끝났을 때의 stk의 top을 오등큰수로 저장
+        ans.push(stk.top());
+
+        //현재 스캔 중인 수를 스택에 저장
+        stk.push(seq.top());
+
+        //다음 수 스캔
+        seq.pop();
     }
 
-    int f[max+1]={0};
-    for(int i=0;i<n;i++){
-        f[arr[i]]+=1;
+    while(!ans.empty()){
+        cout<<ans.top()<<' ';
+        ans.pop();
     }
-
-    stk.Push(-1);
-
-    for(int i=n-1;i>=0;i--){
-        while(stk.Top()>0 && f[stk.Top()]<=f[arr[i]]){
-            stk.Pop();
-        }
-        ans[i]=stk.Top();
-        stk.Push(arr[i]);
-    }
-
-    for(int i=0;i<n;i++){
-        cout<<ans[i]<<" ";
-    }
-
-    delete[] arr;
-    delete[] ans;
 
     return 0;
-}
-
-
-void Stack::Push(int x){
-    if(top==NULL){
-        top=new node;
-        top->num=x;
-        top->next=NULL;
-    }
-    else{
-        link tmp=new node;
-        tmp->num=x;
-        tmp->next=top;
-        top=tmp;
-    }
-
-    size++;
-}
-
-int Stack::Pop(){
-    if(size==0){
-        return -1;
-    }
-    else{
-        int tmp=top->num;
-        link tmpnod=top;
-        top=top->next;
-        delete tmpnod;
-        size--;
-
-        return tmp;
-    }
-}
-
-int Stack::Top(){
-    return top->num;
-}
-
-Stack::~Stack(){
-    while(top){
-        link tmp=top;
-        top=top->next;
-        delete tmp;
-    }
 }
