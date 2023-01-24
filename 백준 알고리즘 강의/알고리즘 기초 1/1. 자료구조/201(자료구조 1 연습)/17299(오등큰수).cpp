@@ -47,7 +47,7 @@ int main()
     {
         /*
         현재 스캔 중인 수보다 stk의 가장 위에 있는 수(top)가 더 크면 pop
-        top이 0일 시 중단
+        top이 -1일 시 중단
         */
         while (stk.top() > 0 && cnt[stk.top()] <= cnt[seq.top()])
         {
