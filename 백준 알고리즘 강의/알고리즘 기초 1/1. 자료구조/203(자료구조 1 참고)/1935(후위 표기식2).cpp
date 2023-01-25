@@ -1,95 +1,82 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
-class Stack{
-    struct node{
-        double num;
-        node* next;
-    };
-    using link=node*;
+int n;
 
-    link top;
+// 후위표기식을 저장할 문자열
+string str;
 
-public:
-    Stack():top(NULL){}
-    void Push(double x);
-    double Pop();
-    ~Stack();
-};
+// 피연산자를 저장할 스택
+stack<double> stk;
 
-int main(){
-    int n;
-    cin>>n;
-    double *operand=new double[n];
+// 피연산자의 실제 값을 저장할 벡터
+vector<double> operand;
 
-    string str;
-    cin>>str;
+double cal(char oper)
+{
+    double a, b, ret;
+    // 연산의 우항
+    b = stk.top();
+    stk.pop();
 
-    Stack stk;
+    // 연산의 좌항
+    a = stk.top();
+    stk.pop();
 
-    for(int i=0;i<n;i++){
-        cin>>operand[i];
+    switch (oper)
+    {
+    case '+':
+        ret = a + b;
+        break;
+
+    case '-':
+        ret = a - b;
+        break;
+
+    case '*':
+        ret = a * b;
+        break;
+
+    case '/':
+        ret = a / b;
+        break;
     }
 
-    for(int i=0;i<str.length();i++){
-        if(str[i]>='A' && str[i]<='Z'){
-            stk.Push(operand[str[i]-'A']);
-        }
-        else{
-            double b=stk.Pop(),a=stk.Pop();
+    return ret;
+}
 
-            if(str[i]=='+'){
-                stk.Push(a+b);
-            }
-            else if(str[i]=='-'){
-                stk.Push(a-b);
-            }
-            else if(str[i]=='*'){
-                stk.Push(a*b);
-            }
-            else if(str[i]=='/'){
-                stk.Push(a/b);
-            }
+int main()
+{
+    cin >> n;
+
+    cin >> str;
+
+    for (int i = 0; i < n; ++i)
+    {
+        double tmp;
+        cin >> tmp;
+
+        operand.push_back(tmp);
+    }
+
+    for (char i : str)
+    {
+        // 피연산자
+        if (i >= 'A' && i <= 'Z')
+        {
+            stk.push(operand[i - 'A']);
+        }
+        // 연산자
+        else
+        {
+            stk.push(cal(i));
         }
     }
 
-
-    cout.setf(ios::fixed);
+    // 소수점 둘째 자리까지 출력
+    cout << fixed;
     cout.precision(2);
-    cout<<stk.Pop();
+    cout << stk.top();
 
     return 0;
-}
-
-
-void Stack::Push(double x){
-    if(top==NULL){
-        top=new node;
-        top->num=x;
-        top->next=NULL;
-    }
-    else{
-        link tmp=new node;
-        tmp->num=x;
-        tmp->next=top;
-        top=tmp;
-    }
-}
-
-double Stack::Pop(){
-    double tmp=top->num;
-    link tmpnod=top;
-    top=top->next;
-    delete tmpnod;
-
-    return tmp;
-}
-
-Stack::~Stack(){
-    while(top){
-        link tmp=top;
-        top=top->next;
-        delete tmp;
-    }
 }
