@@ -47,8 +47,11 @@ double cal(char oper)
 
 int main()
 {
-    cin >> n;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
+    cin >> n;
     cin >> str;
 
     for (int i = 0; i < n; ++i)
