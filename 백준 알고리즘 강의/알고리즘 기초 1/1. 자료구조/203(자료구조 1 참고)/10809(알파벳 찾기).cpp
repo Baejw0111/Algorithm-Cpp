@@ -5,8 +5,17 @@ int dat[26]={0};
 string str;
 
 void cnt(){
-    for(char i:str){
-        dat[i-'a']+=1;
+    for(int i=0;i<str.size();++i){
+        int c=str[i]-'a';
+        if(dat[c]==-1){
+            dat[c]=i;
+        }
+    }
+}
+
+void init(){
+    for(int i=0;i<26;++i){
+        dat[i]=-1;
     }
 }
 
@@ -21,6 +30,7 @@ void output(){
 }
 
 void solve(){
+    init();
     input();
     cnt();
     output();

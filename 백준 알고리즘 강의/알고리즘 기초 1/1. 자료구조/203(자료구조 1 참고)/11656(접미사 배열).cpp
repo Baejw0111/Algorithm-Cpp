@@ -1,28 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int dat[26]={0};
 string str;
-
-void cnt(){
-    for(char i:str){
-        dat[i-'a']+=1;
-    }
-}
+vector<string> ans;
 
 void input(){
     cin>>str;
 }
 
 void output(){
-    for(int i:dat){
-        cout<<i<<' ';
+    for(string i:ans){
+        cout<<i<<'\n';
     }
 }
 
 void solve(){
-    input();
-    cnt();
+    int len=str.length();
+
+    for(int i=0;i<len;++i){
+        ans.push_back(str);
+        str.erase(0,1);
+    }
+
+    sort(ans.begin(),ans.end());
+
     output();
 }
 
@@ -31,6 +32,7 @@ int main(){
     cin.tie(NULL);
     cout.tie(NULL);
 
+    input();
     solve();
 
     return 0;
