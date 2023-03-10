@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// https://www.acmicpc.net/problem/6588
+
 /* 주어진 것
 골드바흐의 추측
 4보다 큰 모든 짝수는 두 홀수 소수의 합으로 나타낼 수 있다.
@@ -29,7 +31,7 @@ prime 배열에 0으로 저장된 값이 소수
 bool prime[MAX] = {0}; // 소수 여부 저장
 
 // 소수 판별
-void findPrime() {
+void Eratosthenes() {
   for (int i = 3; i < MAX; i += 2) {
     if (prime[i])
       continue;
@@ -53,7 +55,7 @@ void output(int n) {
 }
 
 void solve() {
-  findPrime();
+  Eratosthenes();
 
   while (1) {
     int n;
